@@ -88,15 +88,15 @@ int main(int argc, char *argv[])
 	}
 	
 	// Send specified text (second command line argument; cannot contain spaces)
-	if(WriteFile(hSerial, argv[2], strlen(argv[1]), &dwBytesWritten, NULL) == 0)
+	if(!WriteFile(hSerial, argv[2], strlen(argv[1]), &dwBytesWritten, NULL))
 	{
 		fprintf(stderr, "Error writing text to %s\n", argv[1]);
 	}
-	
+
 	// Close serial port
-	if (CloseHandle(hSerial) == 0);
+	if (CloseHandle(hSerial) == 0)
 	{
-		fprintf(stderr, "Error closing serial device %s\n", argv[1]);
+		fprintf(stderr, "Error closing serial device %s\n", argv[1]);			
 		return 1;
 	}
 	
