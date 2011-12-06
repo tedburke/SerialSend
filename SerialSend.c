@@ -10,7 +10,7 @@
 //
 // To compile:
 //
-//		g++ -o SerialSend.exe SerialSend.cpp
+//		gcc -o SerialSend.exe SerialSend.c
 //
 // To run (this example sends the characters "S365" via COM1):
 //
