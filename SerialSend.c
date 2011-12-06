@@ -1,5 +1,5 @@
 //
-// SerialSend.cpp - This program sends text via serial port
+// SerialSend.c - This program sends text via serial port
 // Written by Ted Burke - last updated 6-12-2011
 //
 // Command line arguments are used to specify the text
@@ -12,11 +12,11 @@
 //
 // To compile with MinGW:
 //
-//		g++ -o SerialSend.exe SerialSend.cpp
+//		gcc -o SerialSend.exe SerialSend.c
 //
 // To compile with cl, the Microsoft compiler:
 //
-//		cl SerialSend.exe
+//		cl SerialSend.c
 //
 // To run (this example sends the characters "S365" via COM1):
 //
@@ -32,7 +32,13 @@
 #include <stdio.h>
 
 int main(int argc, char *argv[])
-{	
+{
+	// Declare variables and structures
+	HANDLE hSerial;
+	DCB dcbSerialParams = {0};
+	COMMTIMEOUTS timeouts = {0};
+	DWORD dwBytesWritten = 0;
+
 	// Parse command line arguments
 	if (argc < 2)
 	{
@@ -41,7 +47,6 @@ int main(int argc, char *argv[])
 	}
 	
 	// Open the specified serial port (first command line argument)
-	HANDLE hSerial;
 	hSerial = CreateFile(argv[1], GENERIC_READ|GENERIC_WRITE, 0, 0,
 							OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if (hSerial==INVALID_HANDLE_VALUE)
@@ -51,7 +56,6 @@ int main(int argc, char *argv[])
 	}
 	
 	// Set device parameters (38400 baud, 1 start bit, 1 stop bit, no parity)
-	DCB dcbSerialParams = {0};
 	dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
 	if (GetCommState(hSerial, &dcbSerialParams) == 0)
 	{
@@ -71,7 +75,6 @@ int main(int argc, char *argv[])
 	}
 	
 	// Set COM port timeout settings
-	COMMTIMEOUTS timeouts = {0};
 	timeouts.ReadIntervalTimeout = 50;
 	timeouts.ReadTotalTimeoutConstant = 50;
 	timeouts.ReadTotalTimeoutMultiplier = 10;
@@ -85,7 +88,6 @@ int main(int argc, char *argv[])
 	}
 	
 	// Send specified text (second command line argument; cannot contain spaces)
-	DWORD dwBytesWritten = 0;
 	if(WriteFile(hSerial, argv[2], strlen(argv[1]), &dwBytesWritten, NULL) == 0)
 	{
 		fprintf(stderr, "Error writing text to %s\n", argv[1]);
