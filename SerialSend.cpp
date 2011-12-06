@@ -8,9 +8,13 @@
 // 		argv[1] = device name
 //		argv[2] = text to send
 //
-// To compile:
+// To compile with MinGW:
 //
-//		gcc -o SerialSend.exe SerialSend.c
+//		g++ -o SerialSend.exe SerialSend.cpp
+//
+// or with the Microsoft compiler:
+//
+//		cl SerialSend.exe
 //
 // To run (this example sends the characters "S365" via COM1):
 //
